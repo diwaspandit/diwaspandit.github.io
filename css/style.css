@@ -469,6 +469,132 @@ a { color: inherit; }
 }
 .terminal .prompt { color: var(--glacier); }
 .terminal .out { color: var(--muted); }
+.terminal-live { color: var(--safelight); font-style: normal; }
+
+/* live terminal input */
+.terminal-body { max-height: 340px; overflow-y: auto; }
+#termOut p { margin-bottom: 0.8rem; overflow-wrap: anywhere; }
+#termOut a { color: var(--glacier); }
+#termOut .err { color: var(--safelight); }
+.term-line { display: flex; align-items: baseline; gap: 0.5rem; }
+.term-line input {
+  flex: 1;
+  background: none; border: none; outline: none;
+  font: inherit; color: var(--paper);
+  caret-color: var(--glacier);
+  padding: 0;
+}
+.term-line input::placeholder { color: #6b6259; }
+.term-ref {
+  font-family: var(--mono); font-size: 0.85em;
+  color: var(--safelight);
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 0.05em 0.35em;
+}
+
+/* ==========================================================================
+   Darkroom
+   ========================================================================== */
+
+.darkroom {
+  position: fixed; inset: 0; z-index: 95;
+  background: rgba(19, 17, 16, 0.95);
+  display: grid; place-items: center;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  opacity: 1;
+  transition: opacity 0.15s var(--ease-out), display 0.15s allow-discrete;
+}
+.darkroom:not([hidden]) { transition-duration: 0.25s; }
+.darkroom[hidden] { display: none; opacity: 0; }
+@starting-style {
+  .darkroom:not([hidden]) { opacity: 0; }
+}
+
+.darkroom-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 1.5rem;
+  align-items: center;
+  max-width: 1150px; width: 100%;
+}
+
+.darkroom-stage { position: relative; margin: 0; }
+.darkroom-stage img {
+  width: 100%; max-height: 78vh; object-fit: contain;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
+}
+.darkroom-stage .exif-plate { position: absolute; left: 0.9rem; bottom: 0.9rem; z-index: 2; }
+.dk-grain {
+  position: absolute; inset: 0; z-index: 1;
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.darkroom-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.3rem 1.2rem 1.1rem;
+  font-family: var(--mono);
+}
+.darkroom-title {
+  font-size: 0.8rem; color: var(--glacier); letter-spacing: 0.1em;
+  margin-bottom: 1.2rem;
+}
+.dk-control { margin-bottom: 1rem; }
+.dk-control label {
+  display: flex; justify-content: space-between;
+  font-size: 0.75rem; letter-spacing: 0.08em; color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+.dk-val { color: var(--paper); font-variant-numeric: tabular-nums; }
+
+.dk-control input[type="range"] {
+  width: 100%;
+  appearance: none; -webkit-appearance: none;
+  height: 3px; border-radius: 2px;
+  background: var(--line);
+  outline-offset: 6px;
+}
+.dk-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--safelight);
+  cursor: ew-resize;
+  transition: transform 140ms var(--ease-out);
+}
+.dk-control input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.dk-control input[type="range"]::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--safelight);
+  cursor: ew-resize;
+}
+
+.dk-actions { display: grid; gap: 0.5rem; margin: 1.3rem 0 0.9rem; }
+.dk-btn {
+  font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.05em;
+  padding: 0.55rem 0.9rem;
+  background: none; color: var(--paper);
+  border: 1px solid var(--line); border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 140ms var(--ease-out);
+}
+.dk-btn:hover { border-color: var(--muted); }
+.dk-btn:active { transform: scale(0.97); }
+.dk-btn-primary { border-color: var(--safelight); color: var(--safelight); }
+.dk-btn-primary:hover { background: var(--safelight); color: var(--ink); }
+
+.darkroom-note { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
+
+@media (max-width: 860px) {
+  .darkroom { overflow-y: auto; place-items: start center; }
+  .darkroom-inner { grid-template-columns: 1fr; max-width: 560px; }
+  .darkroom-stage img { max-height: 52vh; }
+}
 
 .offset-list {
   list-style: none;

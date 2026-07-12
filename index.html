@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=9">
 </head>
 <body>
 
@@ -150,15 +150,21 @@
           <h2 class="reveal">Hello, I&rsquo;m <span class="serif">Diwas.</span></h2>
           <p class="reveal">I&rsquo;m a software engineer and photographer from Nepal, now in Austin, Texas &mdash; CS at Texas State, class of &rsquo;28. My days involve a lot of brackets, semicolons, and the occasional production incident. Photography is the opposite of all of that &mdash; analog instinct, no undo button, and a world that refuses to refactor itself for you.</p>
           <p class="reveal">This summer I&rsquo;m interning at Kioxia America, where an inventory platform I built last year runs in production. Before that: ML research and a co-authored ACM journal paper with 200+ citations, three hackathon wins, and the <a href="https://www.youtube.com/@TechDDTwins" target="_blank" rel="noopener">Tech DD Twins</a> channel with my twin. I still shoot to remember &mdash; mostly people, mountains, and the in-between hours.</p>
-          <div class="terminal reveal" aria-label="Terminal summary">
+          <div class="terminal reveal" id="terminal" aria-label="Interactive terminal — type help">
             <div class="terminal-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              <span class="terminal-title">diwas@texas &mdash; zsh</span>
+              <span class="terminal-title">diwas@texas &mdash; zsh &middot; <em class="terminal-live">live</em></span>
             </div>
-            <div class="terminal-body">
-              <p><span class="prompt">&gt;</span> whoami<br><span class="out">diwas pandit</span></p>
-              <p><span class="prompt">&gt;</span> stack<br><span class="out">next.js &middot; postgres &middot; pytorch &middot; a 50mm prime</span></p>
-              <p><span class="prompt">&gt;</span> status<br><span class="out">SWE intern @ Kioxia America &mdash; summer &rsquo;26</span></p>
+            <div class="terminal-body" id="termBody">
+              <div id="termOut" aria-live="polite">
+                <p><span class="prompt">&gt;</span> whoami<br><span class="out">diwas pandit</span></p>
+                <p><span class="prompt">&gt;</span> status<br><span class="out">SWE intern @ Kioxia America &mdash; summer &rsquo;26</span></p>
+              </div>
+              <form id="termForm" class="term-line">
+                <label class="prompt" for="termIn" aria-hidden="true">&gt;</label>
+                <input id="termIn" name="cmd" autocomplete="off" autocapitalize="off" spellcheck="false"
+                       placeholder="type `help` — this terminal is real" aria-label="Terminal command input">
+              </form>
             </div>
           </div>
           <ul class="offset-list reveal" aria-label="Off-set — beyond the screen">
@@ -381,7 +387,7 @@
         </figure>
       </div>
 
-      <p class="section-outro reveal">Want the full darkroom? <a href="https://diwaspandit-photography.lovable.app" target="_blank" rel="noopener">Visit the photography portfolio &rarr;</a></p>
+      <p class="section-outro reveal">Want the full darkroom? <a href="https://diwaspandit-photography.lovable.app" target="_blank" rel="noopener">Visit the photography portfolio &rarr;</a><br>Or develop a frame yourself &mdash; type <code class="term-ref">develop</code> in <a href="#terminal">the terminal</a>.</p>
     </section>
 
     <!-- ============ CONTACT ============ -->
@@ -406,6 +412,42 @@
     <p class="footer-meta">Nepal &#8646; Texas &middot; &copy; 2026 &middot; <a href="https://github.com/diwaspandit/diwaspandit.github.io" target="_blank" rel="noopener">&lt;/&gt; view source</a></p>
   </footer>
 
+  <!-- Darkroom -->
+  <div class="darkroom" id="darkroom" role="dialog" aria-modal="true" aria-label="Darkroom — develop a photograph" hidden>
+    <div class="darkroom-inner">
+      <figure class="darkroom-stage">
+        <img id="dkImg" src="assets/photos/p4_1-BLNRCamT.jpg" alt="First light on the Himalaya at Kalinchowk — your development" width="1600" height="1117">
+        <div class="dk-grain" id="dkGrain" aria-hidden="true"></div>
+        <figcaption class="exif-plate">&#9679; DARKROOM &middot; Kalinchowk, Nepal &middot; developed by you</figcaption>
+      </figure>
+      <div class="darkroom-panel">
+        <p class="darkroom-title">develop.sh</p>
+        <div class="dk-control">
+          <label for="dkExposure">exposure <span class="dk-val" id="dkExposureVal">0</span></label>
+          <input type="range" id="dkExposure" min="-40" max="40" value="0" step="1">
+        </div>
+        <div class="dk-control">
+          <label for="dkContrast">contrast <span class="dk-val" id="dkContrastVal">0</span></label>
+          <input type="range" id="dkContrast" min="-40" max="40" value="0" step="1">
+        </div>
+        <div class="dk-control">
+          <label for="dkTemp">temperature <span class="dk-val" id="dkTempVal">0</span></label>
+          <input type="range" id="dkTemp" min="-100" max="100" value="0" step="1">
+        </div>
+        <div class="dk-control">
+          <label for="dkGrainAmt">grain <span class="dk-val" id="dkGrainVal">0</span></label>
+          <input type="range" id="dkGrainAmt" min="0" max="100" value="0" step="1">
+        </div>
+        <div class="dk-actions">
+          <button class="dk-btn dk-btn-primary" id="dkDownload">download print</button>
+          <button class="dk-btn" id="dkReset">reset</button>
+          <button class="dk-btn" id="dkClose">exit darkroom</button>
+        </div>
+        <p class="darkroom-note">photographs forgive. git doesn&rsquo;t.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
     <button class="lightbox-close" id="lightboxClose" aria-label="Close viewer">&times;</button>
@@ -418,7 +460,8 @@
     <p class="lightbox-count" id="lightboxCount" aria-hidden="true"></p>
   </div>
 
-  <script src="js/main.js?v=8"></script>
-  <script src="js/hero3d.js?v=8" defer></script>
+  <script src="js/main.js?v=9"></script>
+  <script src="js/hero3d.js?v=9" defer></script>
+  <script src="js/terminal.js?v=9" defer></script>
 </body>
 </html>
