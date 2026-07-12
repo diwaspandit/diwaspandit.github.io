@@ -171,7 +171,12 @@ a { color: inherit; }
   border: 1px solid #262b31;
   border-radius: 10px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-  transform: translateY(-6%);
+  /* resting 3D pose, angled toward the photo like a window pane */
+  transform: perspective(1100px) translateY(-6%) rotateY(5deg) rotateX(1.5deg);
+  transition: transform 0.6s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .editor:hover { transform: perspective(1100px) translateY(-6%) rotateY(0deg) rotateX(0deg); }
 }
 .editor-bar {
   display: flex; align-items: center; gap: 0.45rem;
@@ -222,7 +227,10 @@ a { color: inherit; }
 }
 .pane-photo img {
   width: 100%; height: 100%; object-fit: cover;
+  /* slight overscale gives the drag parallax room to move */
+  transform: scale(1.03);
 }
+.exposure.is-anim .pane-photo img { transition: transform 0.6s var(--ease-in-out); }
 .pane-photo-shade {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(19, 17, 16, 0.25) 0%, rgba(19, 17, 16, 0) 40%, rgba(19, 17, 16, 0.55) 100%);
@@ -300,7 +308,7 @@ a { color: inherit; }
 .hero-lines-m { display: none; }
 
 @media (max-width: 720px) {
-  .editor { transform: translateY(-16%); }
+  .editor { transform: perspective(1100px) translateY(-16%) rotateY(4deg) rotateX(1deg); }
   .editor-body { min-height: 17em; }
   .exif-extra { display: none; }
   /* swap in-pane headlines for a lockup outside the clipped panes */
@@ -591,9 +599,24 @@ html:not(.js) .gitlog::before { transform: none; }
   padding: 0; border: 1px solid var(--line); background: var(--surface);
   cursor: zoom-in;
   overflow: hidden;
+  transform-style: preserve-3d;
   transition: transform 140ms var(--ease-out);
 }
 .frame-btn:active { transform: scale(0.98); }
+
+/* specular sheen — light moving across a glossy print (position set by JS) */
+.frame-btn::after {
+  content: "";
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(240px circle at var(--shx, 50%) var(--shy, 50%),
+              rgba(239, 231, 219, 0.09), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .frame-btn:hover::after { opacity: 1; }
+}
 .frame-btn img {
   width: 100%;
   transition: transform 0.45s var(--ease-out), filter 0.3s ease;
@@ -601,7 +624,7 @@ html:not(.js) .gitlog::before { transform: none; }
 }
 
 .frame-plate {
-  position: absolute; left: 0; right: 0; bottom: 0;
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
   padding: 1.6rem 0.9rem 0.7rem;
   background: linear-gradient(180deg, transparent, rgba(19, 17, 16, 0.85));
   text-align: left;
@@ -792,6 +815,10 @@ html:not(.js) .gitlog::before { transform: none; }
   .shutter { display: none; }
   .commit:first-child::before { animation: none; }
   .brand-mark { transition: none; }
+  /* 3D flattens under reduced motion */
+  .editor { transform: translateY(-6%); transition: none; }
+  .frame-btn::after { display: none; }
+  .pane-photo img { transform: none; }
   /* keep the lightbox opacity fade (aids comprehension), drop movement */
   .lightbox figure { transition: none; }
   .lightbox img { transition: opacity 130ms ease; }

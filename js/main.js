@@ -93,11 +93,17 @@
 
   var exposure = document.getElementById("exposure");
   var divider = document.getElementById("divider");
+  var panePhotoImg = document.querySelector(".pane-photo img");
 
   function setSplit(pct) {
     pct = Math.max(8, Math.min(92, pct));
     exposure.style.setProperty("--split", pct + "%");
     divider.setAttribute("aria-valuenow", Math.round(pct));
+    // the photograph sits deeper than the split: it parallaxes as you drag
+    if (panePhotoImg && !reduceMotion) {
+      panePhotoImg.style.transform =
+        "scale(1.03) translateX(" + ((50 - pct) * 0.28).toFixed(1) + "px)";
+    }
   }
 
   if (exposure && divider) {
@@ -294,6 +300,41 @@
     if (e.key === "ArrowLeft") { showAt(galleryIdx - 1, true); e.preventDefault(); }
     if (e.key === "ArrowRight") { showAt(galleryIdx + 1, true); e.preventDefault(); }
   });
+
+  /* ---------------- 3D tilt: photos as prints in hand ---------------- */
+
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll(".frame-btn").forEach(function (btn) {
+      var raf = null;
+      var pressed = false;
+
+      function applyTilt(e) {
+        var r = btn.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width;
+        var y = (e.clientY - r.top) / r.height;
+        btn.style.setProperty("--shx", (x * 100).toFixed(1) + "%");
+        btn.style.setProperty("--shy", (y * 100).toFixed(1) + "%");
+        var ry = ((x - 0.5) * 9).toFixed(2);
+        var rx = ((0.5 - y) * 7).toFixed(2);
+        btn.style.transform =
+          "perspective(900px) rotateX(" + rx + "deg) rotateY(" + ry + "deg)" +
+          (pressed ? " scale(0.98)" : "");
+      }
+
+      btn.addEventListener("pointermove", function (e) {
+        if (raf) return;
+        raf = requestAnimationFrame(function () { raf = null; applyTilt(e); });
+      });
+      btn.addEventListener("pointerdown", function (e) { pressed = true; applyTilt(e); });
+      btn.addEventListener("pointerup", function (e) { pressed = false; applyTilt(e); });
+      btn.addEventListener("pointerleave", function () {
+        pressed = false;
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        btn.style.transform = "";
+      });
+    });
+  }
 
   /* ---------------- Console easter egg ---------------- */
 
