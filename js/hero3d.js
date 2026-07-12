@@ -5,19 +5,6 @@
 (function () {
   "use strict";
 
-  var canvas = document.getElementById("terrain");
-  if (!canvas || !canvas.getContext) return;
-  var ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  // layout must not depend on the stylesheet being current (cache skew):
-  // position inline so a stale CSS copy can never turn this into a grid row
-  canvas.style.position = "absolute";
-  canvas.style.inset = "0";
-  canvas.style.width = "100%";
-  canvas.style.height = "100%";
-  canvas.style.pointerEvents = "none";
-
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
@@ -48,7 +35,22 @@
     return Math.pow(n / 1.5, 1.6);
   }
 
-  /* ---------- projection & drawing ---------- */
+  /* ================= hero terrain: endless flyover ================= */
+
+  function initTerrain() {
+
+  var canvas = document.getElementById("terrain");
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  // layout must not depend on the stylesheet being current (cache skew):
+  // position inline so a stale CSS copy can never turn this into a grid row
+  canvas.style.position = "absolute";
+  canvas.style.inset = "0";
+  canvas.style.width = "100%";
+  canvas.style.height = "100%";
+  canvas.style.pointerEvents = "none";
 
   var W = 0, H = 0, DPR = 1;
   var COLS = 96, ROWS = 34;
@@ -162,4 +164,60 @@
 
   // fade in once the first frame exists
   requestAnimationFrame(function () { canvas.classList.add("is-on"); });
+
+  }
+
+  /* ============ footer ridgeline: the mountains return ============ */
+
+  function initRidgeline() {
+    var c = document.getElementById("ridgeline");
+    if (!c || !c.getContext) return;
+    var g = c.getContext("2d");
+    if (!g) return;
+
+    function draw() {
+      var w = c.clientWidth, h = c.clientHeight;
+      if (!w || !h) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      c.width = Math.round(w * dpr);
+      c.height = Math.round(h * dpr);
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, w, h);
+
+      // three still ridges, far to near — a quiet echo of the hero
+      for (var L = 2; L >= 0; L--) {
+        var alpha = [0.30, 0.17, 0.09][L];
+        var amp = h * (0.72 - L * 0.18);
+        var pts = [];
+        for (var x = 0; x <= w; x += 4) {
+          var n = ridgeHeight(x * 0.085 + L * 61.3, 7.1 + L * 13.7);
+          pts.push([x, h - 1 - n * amp]);
+        }
+        g.beginPath();
+        g.moveTo(pts[0][0], pts[0][1]);
+        for (var i = 1; i < pts.length; i++) g.lineTo(pts[i][0], pts[i][1]);
+        g.lineTo(w, h + 2); g.lineTo(0, h + 2);
+        g.closePath();
+        g.fillStyle = "rgba(19, 17, 16, 0.92)";
+        g.fill();
+        g.beginPath();
+        g.moveTo(pts[0][0], pts[0][1]);
+        for (var j = 1; j < pts.length; j++) g.lineTo(pts[j][0], pts[j][1]);
+        g.strokeStyle = "rgba(159, 192, 207, " + alpha + ")";
+        g.lineWidth = 1;
+        g.stroke();
+      }
+    }
+
+    draw();
+    var pending = false;
+    window.addEventListener("resize", function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () { pending = false; draw(); });
+    });
+  }
+
+  initTerrain();
+  initRidgeline();
 })();

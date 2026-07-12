@@ -305,9 +305,10 @@
 
   var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   if (finePointer && !reduceMotion) {
-    document.querySelectorAll(".frame-btn").forEach(function (btn) {
+    document.querySelectorAll(".frame-btn, .readme-photo").forEach(function (btn) {
       var raf = null;
       var pressed = false;
+      var pressable = btn.tagName === "BUTTON";
 
       function applyTilt(e) {
         var r = btn.getBoundingClientRect();
@@ -326,8 +327,8 @@
         if (raf) return;
         raf = requestAnimationFrame(function () { raf = null; applyTilt(e); });
       });
-      btn.addEventListener("pointerdown", function (e) { pressed = true; applyTilt(e); });
-      btn.addEventListener("pointerup", function (e) { pressed = false; applyTilt(e); });
+      btn.addEventListener("pointerdown", function (e) { if (pressable) { pressed = true; applyTilt(e); } });
+      btn.addEventListener("pointerup", function (e) { if (pressable) { pressed = false; applyTilt(e); } });
       btn.addEventListener("pointerleave", function () {
         pressed = false;
         if (raf) { cancelAnimationFrame(raf); raf = null; }
