@@ -1,310 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta name="google-site-verification" content="lzJJ1cUGH6PQHeoOqk7DQuqdYG6xHaPmgavkJh0_3Zs" />
-  <meta name="msvalidate.01" content="80A916F6AD9B20D354CDD94E647CF704" />
-  <meta name="msvalidate.01" content="C40FCF46E1F98365572B248ECF84F1C5" />
-
-  <title>Diwas Pandit</title>
-  <meta content="I am an undergraduate student with a expertise in web deveopment and IT. I also have a strong passion for
-  photography." name="description">
-  <meta content="Diwas Pandit, Pandit, Diwaspandit, Diwaspandit, Pandit diwas, hamro opportunity, hamroopportunity, personal portfolio, diwaspandit,diwas, simara, nepal diwas, diwas pandit nepal, diwas st xavier college, stxavier college, sakshayam suppliers, sab trade link" name="keywords">
-
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Template Main CSS File -->
-  <link href="assets/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: iPortfolio
-  ======================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diwas Pandit — I write code. I chase light.</title>
+  <meta name="description" content="Diwas Pandit — software engineer and photographer. React, Node, Postgres, and a 50mm prime. Nepal ⇄ Texas.">
+  <meta property="og:title" content="Diwas Pandit — I write code. I chase light.">
+  <meta property="og:description" content="Software engineer by day. Photographer the rest of the time. Nepal ⇄ Texas.">
+  <meta property="og:image" content="assets/photos/p4_1-BLNRCamT.jpg">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-  <!-- ======= Mobile nav toggle button ======= -->
-  <i class="bi bi-list mobile-nav-toggle d-xl-none"></i>
+  <!-- Aperture load reveal -->
+  <div class="iris" id="iris" aria-hidden="true">
+    <svg viewBox="0 0 100 100" class="iris-mark">
+      <g class="iris-blades">
+        <path d="M50 50 L50 2 A48 48 0 0 1 91.6 26 Z"/>
+        <path d="M50 50 L91.6 26 A48 48 0 0 1 91.6 74 Z"/>
+        <path d="M50 50 L91.6 74 A48 48 0 0 1 50 98 Z"/>
+        <path d="M50 50 L50 98 A48 48 0 0 1 8.4 74 Z"/>
+        <path d="M50 50 L8.4 74 A48 48 0 0 1 8.4 26 Z"/>
+        <path d="M50 50 L8.4 26 A48 48 0 0 1 50 2 Z"/>
+      </g>
+    </svg>
+    <p class="iris-label">f/1.8 &middot; opening</p>
+  </div>
 
-  <!-- ======= Header ======= -->
-  <header id="header">
-    <div class="d-flex flex-column">
+  <a class="skip-link" href="#readme">Skip to content</a>
 
-      <div class="profile">
-        <img src="assets/img/profile.jpg" alt="" class="img-fluid rounded-circle">
-        <h1 class="text-light"><a href="index.html">Diwas Pandit</a></h1>
-        <div class="social-links mt-3 text-center">
-          <a href="https://www.youtube.com/@TechDDTwins" target="_blank" class="youtube"><i class="bx bxl-youtube"></i></a>
-          <a href="https://www.instagram.com/diwas512/" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
-          <a href="https://github.com/diwaspandit" target="_blank" class="github"><i class="bx bxl-github"></i></a>
-          <a href="https://www.linkedin.com/in/diwaspandit12/" target="_blank" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+  <header class="nav" id="nav">
+    <a class="nav-brand" href="#top" aria-label="Diwas Pandit — home">
+      <svg viewBox="0 0 100 100" class="brand-mark" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="6"/>
+        <g class="brand-blades">
+          <path d="M50 50 L50 12 A38 38 0 0 1 82.9 31 Z"/>
+          <path d="M50 50 L82.9 31 A38 38 0 0 1 82.9 69 Z"/>
+          <path d="M50 50 L82.9 69 A38 38 0 0 1 50 88 Z"/>
+          <path d="M50 50 L50 88 A38 38 0 0 1 17.1 69 Z"/>
+          <path d="M50 50 L17.1 69 A38 38 0 0 1 17.1 31 Z"/>
+          <path d="M50 50 L17.1 31 A38 38 0 0 1 50 12 Z"/>
+        </g>
+      </svg>
+      <span>diwas<em>.</em>pandit</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#readme">readme</a>
+      <a href="#gitlog">git log</a>
+      <a href="#stack">stack</a>
+      <a href="#photos" class="is-photo">photos</a>
+      <a href="#contact">contact</a>
+    </nav>
+    <span class="nav-fstop" id="fstop" aria-hidden="true">f/1.8</span>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO: DUAL EXPOSURE ============ -->
+    <section class="hero" id="hero">
+      <div class="exposure" id="exposure">
+
+        <!-- Code pane (base layer) -->
+        <div class="pane pane-code" aria-hidden="false">
+          <div class="editor">
+            <div class="editor-bar">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              <span class="editor-file">diwas.js — ~/portfolio</span>
+            </div>
+            <pre class="editor-body"><code id="typed"></code><span class="caret" id="caret"></span></pre>
+          </div>
+          <h1 class="hero-line hero-line-code">I write <span>code.</span></h1>
+        </div>
+
+        <!-- Photo pane (clipped layer) -->
+        <div class="pane pane-photo" id="panePhoto">
+          <img src="assets/photos/p4_1-BLNRCamT.jpg" alt="First light on the Himalaya at Kalinchowk, Nepal" fetchpriority="high">
+          <div class="pane-photo-shade" aria-hidden="true"></div>
+          <p class="hero-line hero-line-photo" aria-hidden="true">I chase <em>light.</em></p>
+          <p class="exif-plate" aria-hidden="true">&#9679; REC &middot; <span class="exif-extra">Kalinchowk, Nepal &middot; </span>f/1.8<span class="exif-extra"> &middot; ISO 400</span></p>
+        </div>
+
+        <!-- Draggable divider -->
+        <div class="divider" id="divider" role="slider" tabindex="0"
+             aria-label="Blend between code and photography"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+          <span class="divider-line"></span>
+          <span class="divider-handle">&#8596;</span>
+        </div>
+
+        <!-- Mobile headline lockup (outside the clipped panes) -->
+        <div class="hero-lines-m" aria-hidden="true">
+          <p class="hero-lines-m-code">I write <span>code.</span></p>
+          <p class="hero-lines-m-photo">I chase <em>light.</em></p>
         </div>
       </div>
 
-      <nav id="navbar" class="nav-menu navbar">
-        <ul>
-          <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-          <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
-          <li><a href="#skills" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Skills</span></a></li>
-          <li><a href="#certification" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Certification</span></a></li>
-          <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
-        </ul>
-      </nav><!-- .nav-menu -->
-    </div>
-  </header><!-- End Header -->
+      <p class="hero-hint" aria-hidden="true">drag the split &middot; both are true</p>
+    </section>
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
-    <div class="hero-container" data-aos="fade-in">
-      <h1>Diwas Pandit</h1>
-      <p>I'm <span class="typed" data-typed-items="YouTuber, Developer, IT Support Specialist, Photographer"></span></p>
-    </div>
-  </section><!-- End Hero -->
-
-  <main id="main">
-
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>About</h2>
-          <p> Hi, I'm Diwas Pandit, an undergraduate student with expertise in Web Development and IT Support. I also run the 'Tech DD Twins' YouTube channel, where I create troubleshooting videos and share insights on the latest technology. With a passion for solving technical challenges and helping others, I enjoy applying my skills in web development and IT.
-            </p>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-4" data-aos="fade-right">
-<!--             <img src="assets/img/profile_about.jpeg" class="img-fluid" alt=""> -->
-            <img src="https://media.licdn.com/dms/image/v2/D5603AQFBzDQMggTJ5g/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1713361608043?e=1731542400&v=beta&t=PqssD-V2zryo8hnDgDV6fRQa03ThGw0PsjinUkFI-c0" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
-            <h3>Web Developer</h3>
-            <p class="fst-italic">
-            </p>
-            <div class="row">
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Website:</strong> <span>diwaspandit.com.np</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong> <span>+1</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>San Marcos, Texas, USA</span></li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Undergraduate</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>email@diwaspandit.com.np</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
-                </ul>
-              </div>
-            </div>
-            <center>
-              <a target="_blank" href="https://drive.google.com/file/d/1zsKdct5t4Fo2ZViVIaQk3syLOd0oBo5P/view?usp=sharing">
-                <button style="margin-top: 50px; border-radius: 30px; background-color: #149ddd; color: white; padding: 15px 30px; font-size: 20px; border: none; cursor: pointer; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
-                  Resume
-                </button>
-              </a>
-            </center>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End About Section -->
-
-
-
-    <!-- ======= Skills Section ======= -->
-    <section id="skills" class="skills section-bg">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Skills</h2>
-          <p></p>
-        </div>
-
-        <div class="row skills-content">
-
-          <div class="col-lg-6" data-aos="fade-up">
-
-            <div class="progress">
-              <span class="skill">HTML <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">CSS<i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">JavaScript <i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">Python<i class="val">60%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-
-            
-
-            <div class="progress">
-              <span class="skill">Micorosft 365<i class="val">90%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">MongoDb<i class="val">60%</i> </span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">React<i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">Express <i class="val">40%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Skills Section -->
-
-    <!-- ======= Certification Section ======= -->
-    <section id="certification" class="portfolio section-bg">
-      <div class="container">
-  
-        <div class="section-title">
-          <h2>Certification </h2>
-          <p></p>
-        </div>
-    
-      <div style="display: flex; justify-content: space-around;">
-      <!-- Meta Frontend Certification -->
-      <div style="display: inline-block; margin-right: 20px;">
-        <h3>Meta Frontend Certification</h3>
-        <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="53e5d1c2-1ba1-43c3-a572-f8c7b211cbb9" data-share-badge-host="https://www.credly.com"></div>
-      </div>
-  
-      <!-- Tech Support Specialist Certification -->
-      <div style="display: inline-block;">
-        <h3>Tech Support Specialist Certification</h3>
-        <div data-iframe-width="150" data-iframe-height="270" data-share-badge-id="95a0576b-bf5d-4c3f-826d-64a158bf453c" data-share-badge-host="https://www.credly.com"></div>
+    <!-- ============ TICKER ============ -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>// SHOT IN NEPAL &amp; USA &#10022; f/1.8 &#10022; git commit -m 'sunset' &#10022; while(light){ shoot() } &#10022; analog soul, digital sensor &#10022; ISO 6400 nights &#10022; made with two hands and one eye &#10022;&nbsp;</span>
+        <span>// SHOT IN NEPAL &amp; USA &#10022; f/1.8 &#10022; git commit -m 'sunset' &#10022; while(light){ shoot() } &#10022; analog soul, digital sensor &#10022; ISO 6400 nights &#10022; made with two hands and one eye &#10022;&nbsp;</span>
       </div>
     </div>
 
-    <script type="text/javascript" async src="//cdn.credly.com/assets/utilities/embed.js"></script>
-        
-      </div>
-    </section><!-- End Certification Section -->
-
-
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-
-        <div class="section-title">
-          <h2>Contact</h2>
-          <p></p>
-        </div>
-
-        <div class="row" data-aos="fade-in">
-
-          <div class="col-lg-12 d-flex align-items-center">
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>San Marcos, Texas, USA</p>
-              </div>
-          
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>zxh15@txstate.edu</p>
-              </div>
-          
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>(+1) 5122168792</p>
-              </div>
-          
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3459.162743169065!2d-97.94092592461547!3d29.888410975002518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x865ca87036ad24df%3A0x7117159ea740e992!2sTexas%20State%20University!5e0!3m2!1sen!2sus!4v1726344908290!5m2!1sen!2sus" width=100% height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> 
-            </div>
+    <!-- ============ README ============ -->
+    <section class="section" id="readme">
+      <p class="eyebrow eyebrow-code reveal">$ cat README.md</p>
+      <div class="readme-grid">
+        <figure class="readme-photo reveal">
+          <img src="assets/photos/img_2808-DAUOAIbq.jpg" alt="Diwas Pandit in Times Square, New York" loading="lazy">
+          <figcaption class="exif-plate">&#9679; Self-portrait &middot; Times Square, NYC</figcaption>
+        </figure>
+        <div class="readme-body">
+          <h2 class="reveal">Hello, I&rsquo;m <span class="serif">Diwas.</span></h2>
+          <p class="reveal">I&rsquo;m a software engineer and photographer from Nepal, currently studying in San Marcos, Texas. My day involves a lot of brackets, semicolons, and the occasional production incident. Photography is the opposite of all of that &mdash; analog instinct, no undo button, and a world that refuses to refactor itself for you.</p>
+          <p class="reveal">I build for the web, troubleshoot for fun on the <a href="https://www.youtube.com/@TechDDTwins" target="_blank" rel="noopener">Tech DD Twins</a> channel with my twin, and shoot to remember &mdash; mostly people, mountains, and the in-between hours when a city decides what it wants to be that day.</p>
+          <div class="terminal reveal" aria-label="Terminal summary">
+            <p><span class="prompt">&gt;</span> whoami<br><span class="out">diwas pandit</span></p>
+            <p><span class="prompt">&gt;</span> stack<br><span class="out">react &middot; node &middot; postgres &middot; a 50mm prime</span></p>
+            <p><span class="prompt">&gt;</span> status<br><span class="out">open to freelance &amp; internships</span></p>
           </div>
-          
-
+          <ul class="offset-list reveal" aria-label="Off-set — beyond the screen">
+            <li><span class="offset-year">2018</span> Led a student team raising funds and relief for fifty-plus tornado-hit households in southern Nepal.</li>
+            <li><span class="offset-year">2019&ndash;</span> Co-creator of Tech DD Twins &mdash; tech troubleshooting on YouTube.</li>
+            <li><span class="offset-year">&nbsp;&nbsp;&#10033;</span> A camera is a small excuse to show up for people.</li>
+          </ul>
         </div>
-
       </div>
-    </section><!-- End Contact Section -->
+    </section>
 
-  </main><!-- End #main -->
+    <!-- ============ GIT LOG ============ -->
+    <section class="section" id="gitlog">
+      <p class="eyebrow eyebrow-code reveal">$ git log --oneline --graph</p>
+      <h2 class="reveal">Commit <span class="serif">history.</span></h2>
+      <ol class="gitlog reveal" reversed>
+        <li class="commit">
+          <span class="commit-hash">ace0f8a</span>
+          <span class="commit-ref">(HEAD &rarr; texas)</span>
+          <span class="commit-msg">study: undergraduate &mdash; Texas State University, San Marcos</span>
+          <span class="commit-date">now</span>
+        </li>
+        <li class="commit">
+          <span class="commit-hash">f22cede</span>
+          <span class="commit-ref commit-tag">(tag: meta-frontend)</span>
+          <span class="commit-msg">cert: Meta Front-End Developer Certificate</span>
+        </li>
+        <li class="commit">
+          <span class="commit-hash">c0ffee1</span>
+          <span class="commit-ref commit-tag">(tag: tech-support)</span>
+          <span class="commit-msg">cert: Tech Support Specialist Certificate</span>
+        </li>
+        <li class="commit">
+          <span class="commit-hash">ca5cade</span>
+          <span class="commit-msg">feat(studio): Incubate Nepal application &mdash; one-person production: laptop, lamps, a whiteboard</span>
+          <span class="commit-date">2023</span>
+        </li>
+        <li class="commit">
+          <span class="commit-hash">5a1ute5</span>
+          <span class="commit-msg">learn: St. Xavier&rsquo;s College, Kathmandu &mdash; rural immersion, community first</span>
+        </li>
+        <li class="commit">
+          <span class="commit-hash">1n17d0c</span>
+          <span class="commit-msg">init: Tech DD Twins &mdash; YouTube channel with my twin brother</span>
+          <span class="commit-date">2019</span>
+        </li>
+      </ol>
+    </section>
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="copyright">
-        &copy; Updated <strong><span>2024</span></strong>
+    <!-- ============ STACK ============ -->
+    <section class="section" id="stack">
+      <p class="eyebrow eyebrow-code reveal">$ cat stack.json</p>
+      <h2 class="reveal">Tools I <span class="serif">trust.</span></h2>
+      <div class="stack-card reveal">
+<pre><code>{
+  <span class="k">"languages"</span>:  [<span class="s">"JavaScript"</span>, <span class="s">"Python"</span>, <span class="s">"HTML"</span>, <span class="s">"CSS"</span>],
+  <span class="k">"frameworks"</span>: [<span class="s">"React"</span>, <span class="s">"Node"</span>, <span class="s">"Express"</span>],
+  <span class="k">"data"</span>:       [<span class="s">"MongoDB"</span>, <span class="s">"PostgreSQL"</span>],
+  <span class="k">"tools"</span>:      [<span class="s">"Git"</span>, <span class="s">"Microsoft 365"</span>],
+  <span class="k">"camera"</span>:     { <span class="k">"glass"</span>: <span class="s">"50mm prime"</span>, <span class="k">"sensor"</span>: <span class="s">"one good eye"</span> },
+  <span class="k">"freelance"</span>:  <span class="b">true</span>
+}</code></pre>
       </div>
-    </div>
-  </footer><!-- End  Footer -->
+    </section>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- ============ CONTACT SHEET / PHOTOS ============ -->
+    <section class="section section-wide" id="photos">
+      <p class="eyebrow eyebrow-photo reveal">ROLL 26 &middot; CONTACT SHEET</p>
+      <h2 class="reveal">The other <span class="serif">half.</span></h2>
+      <p class="section-lede reveal">Frames from Nepal and the USA &mdash; mountains that wake up early, cities that refuse to sleep, and people who make both worth photographing.</p>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+      <div class="filters reveal" role="group" aria-label="Filter photographs">
+        <button class="chip is-active" data-filter="all">all</button>
+        <button class="chip" data-filter="nature">nature</button>
+        <button class="chip" data-filter="city">city</button>
+        <button class="chip" data-filter="people">people</button>
+        <button class="chip" data-filter="life">life</button>
+        <button class="chip" data-filter="work">work</button>
+      </div>
 
-  <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+      <div class="sheet" id="sheet">
+        <figure class="frame reveal" data-cat="nature">
+          <button class="frame-btn" data-title="Mountain&rsquo;s Morning Serenade" data-loc="Kalinchowk, Nepal">
+            <img src="assets/photos/p4_1-BLNRCamT.jpg" alt="Mountain's Morning Serenade — first light on the Himalaya, Kalinchowk" loading="lazy">
+            <figcaption class="frame-plate"><span>Mountain&rsquo;s Morning Serenade</span><small>&#9679; Kalinchowk, Nepal</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="nature">
+          <button class="frame-btn" data-title="Mirror Images" data-loc="A wooden house">
+            <img src="assets/photos/p4_2-BTP2Nmuv.jpg" alt="Mirror Images — two kittens holding the same pose" loading="lazy">
+            <figcaption class="frame-plate"><span>Mirror Images</span><small>&#9679; A wooden house</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="nature">
+          <button class="frame-btn" data-title="Glassy Afternoon" data-loc="San Marcos, Texas">
+            <img src="assets/photos/img_2933-mAlTLi1a.jpg" alt="Glassy Afternoon — a lone boat on a mirror-still river in San Marcos" loading="lazy">
+            <figcaption class="frame-plate"><span>Glassy Afternoon</span><small>&#9679; San Marcos, Texas</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="city">
+          <button class="frame-btn" data-title="A Resurgent Horizon" data-loc="Kathmandu, Nepal">
+            <img src="assets/photos/p5_1-BKKrPMaK.jpg" alt="A Resurgent Horizon — the rebuilt Dharahara tower, Kathmandu" loading="lazy">
+            <figcaption class="frame-plate"><span>A Resurgent Horizon</span><small>&#9679; Kathmandu, Nepal</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="city">
+          <button class="frame-btn" data-title="Eternal Timekeeper" data-loc="Kathmandu, Nepal">
+            <img src="assets/photos/p5_2-DcuAYu63.jpg" alt="Eternal Timekeeper — Kathmandu's oldest clock tower" loading="lazy">
+            <figcaption class="frame-plate"><span>Eternal Timekeeper</span><small>&#9679; Kathmandu, Nepal</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="city">
+          <button class="frame-btn" data-title="Cables &amp; Constellations" data-loc="Brooklyn Bridge, NYC">
+            <img src="assets/photos/img_2809-DZKw2wV9.jpg" alt="Cables and Constellations — Brooklyn Bridge rigging with Manhattan behind" loading="lazy">
+            <figcaption class="frame-plate"><span>Cables &amp; Constellations</span><small>&#9679; Brooklyn Bridge, NYC</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="people">
+          <button class="frame-btn" data-title="Curiosity Unleashed" data-loc="Nuwakot, Nepal">
+            <img src="assets/photos/p6_1-CK7D1zkM.jpg" alt="Curiosity Unleashed — children during a rural immersion camp, Nuwakot" loading="lazy">
+            <figcaption class="frame-plate"><span>Curiosity Unleashed</span><small>&#9679; Nuwakot, Nepal</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="people">
+          <button class="frame-btn" data-title="Festival of Light" data-loc="Bara, Terai">
+            <img src="assets/photos/p6_2-DaeUJ0Aa.jpg" alt="Festival of Light — a plate of lamps for Laxmi Puja" loading="lazy">
+            <figcaption class="frame-plate"><span>Festival of Light</span><small>&#9679; Bara, Terai</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="life">
+          <button class="frame-btn" data-title="Indra Jatra" data-loc="Basantapur Durbar Square">
+            <img src="assets/photos/p7_1-C3KP9r24.jpg" alt="Indra Jatra — playing the Dhimay in Haku Patasi at Kathmandu's street festival" loading="lazy">
+            <figcaption class="frame-plate"><span>Indra Jatra</span><small>&#9679; Basantapur Durbar Square</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="life">
+          <button class="frame-btn" data-title="Dashain Delight" data-loc="Bara, Terai">
+            <img src="assets/photos/p7_2-DAHiJa1k.jpg" alt="Dashain Delight — tika, kurtha, and blessings from elders" loading="lazy">
+            <figcaption class="frame-plate"><span>Dashain Delight</span><small>&#9679; Bara, Terai</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="life">
+          <button class="frame-btn" data-title="The Backswing" data-loc="Somewhere on the back nine">
+            <img src="assets/photos/img_1979-MKSXMxtD.jpg" alt="The Backswing — a small figure and a big sky on a golf course" loading="lazy">
+            <figcaption class="frame-plate"><span>The Backswing</span><small>&#9679; Somewhere on the back nine</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="life">
+          <button class="frame-btn" data-title="Catch of the Day" data-loc="Canyon Lake, Texas">
+            <img src="assets/photos/img_2868-B_iuzt2r.jpg" alt="Catch of the Day — fishing at Canyon Lake, Texas" loading="lazy">
+            <figcaption class="frame-plate"><span>Catch of the Day</span><small>&#9679; Canyon Lake, Texas</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="work">
+          <button class="frame-btn" data-title="Incubate Nepal — Application Video" data-loc="Study room, Kathmandu">
+            <img src="assets/photos/p8_1-C-i7R_Ex.jpg" alt="Incubate Nepal application video — a one-person studio setup" loading="lazy">
+            <figcaption class="frame-plate"><span>Incubate Nepal</span><small>&#9679; Study room, Kathmandu</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="work">
+          <button class="frame-btn" data-title="International Women&rsquo;s Day" data-loc="St. Alphonsa&rsquo;s School, Simara">
+            <img src="assets/photos/p8_2-pQLokKl_.jpg" alt="Behind the camera for a school video on International Women's Day" loading="lazy">
+            <figcaption class="frame-plate"><span>Women&rsquo;s Day, behind the lens</span><small>&#9679; Simara, Nepal</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="work">
+          <button class="frame-btn" data-title="Justice Echo" data-loc="Maitighar, Kathmandu">
+            <img src="assets/photos/p9_2-9i9JNVCC.jpg" alt="Justice Echo — advocates gather with pamphlets at Maitighar" loading="lazy">
+            <figcaption class="frame-plate"><span>Justice Echo</span><small>&#9679; Maitighar, Kathmandu</small></figcaption>
+          </button>
+        </figure>
+        <figure class="frame reveal" data-cat="work">
+          <button class="frame-btn" data-title="Urban Commute" data-loc="Kathmandu Valley">
+            <img src="assets/photos/p9_1-CkngvElp.jpg" alt="Urban Commute — a father who drives a bus 14 hours a day" loading="lazy">
+            <figcaption class="frame-plate"><span>Urban Commute</span><small>&#9679; Kathmandu Valley</small></figcaption>
+          </button>
+        </figure>
+      </div>
 
+      <p class="section-outro reveal">Want the full darkroom? <a href="https://diwaspandit-photography.lovable.app" target="_blank" rel="noopener">Visit the photography portfolio &rarr;</a></p>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section" id="contact">
+      <p class="eyebrow eyebrow-code reveal">$ open a channel</p>
+      <h2 class="reveal">Say <span class="serif">hi.</span></h2>
+      <p class="section-lede reveal">Freelance, internships, photo walks, or a stubborn bug you can&rsquo;t reproduce &mdash; my inbox is open.</p>
+      <ul class="channels reveal">
+        <li><a href="mailto:panditdiwas12us@gmail.com"><span class="channel-key">email</span><span class="channel-val">panditdiwas12us@gmail.com</span></a></li>
+        <li><a href="https://www.linkedin.com/in/diwaspandit12/" target="_blank" rel="noopener"><span class="channel-key">linkedin</span><span class="channel-val">/in/diwaspandit12</span></a></li>
+        <li><a href="https://github.com/diwaspandit" target="_blank" rel="noopener"><span class="channel-key">github</span><span class="channel-val">@diwaspandit</span></a></li>
+        <li><a href="resume.pdf" target="_blank" rel="noopener"><span class="channel-key">resume</span><span class="channel-val">resume.pdf</span></a></li>
+        <li><a href="https://www.instagram.com/diwas512/" target="_blank" rel="noopener"><span class="channel-key">instagram</span><span class="channel-val">@diwas512</span></a></li>
+        <li><a href="https://www.youtube.com/@TechDDTwins" target="_blank" rel="noopener"><span class="channel-key">youtube</span><span class="channel-val">Tech DD Twins</span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-sign">shot <span class="amp-photo">&amp;</span> shipped by <span class="serif">Diwas Pandit</span></p>
+    <p class="footer-meta">Nepal &#8646; Texas &middot; &copy; 2026 &middot; <a href="https://github.com/diwaspandit/diwaspandit.github.io" target="_blank" rel="noopener">&lt;/&gt; view source</a></p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close viewer">&times;</button>
+    <figure>
+      <img id="lightboxImg" src="" alt="">
+      <figcaption class="exif-plate" id="lightboxCap"></figcaption>
+    </figure>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
-
 </html>
