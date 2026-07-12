@@ -16,6 +16,9 @@
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   --wrap: 1080px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
+  /* strong curves — built-in easings are too weak (animations.dev) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -174,7 +177,7 @@ a { color: inherit; }
 .editor-bar .dot:first-child { background: #e0604f; }
 .editor-file {
   margin-left: 0.5rem;
-  font-family: var(--mono); font-size: 0.72rem; color: #5c6670;
+  font-family: var(--mono); font-size: 0.72rem; color: #79838e;
 }
 .editor-body {
   padding: 1.1rem 1.25rem 1.3rem;
@@ -186,7 +189,7 @@ a { color: inherit; }
 .editor-body .tok-kw { color: #c792ea; }
 .editor-body .tok-str { color: #ecc48d; }
 .editor-body .tok-fn { color: #82aaff; }
-.editor-body .tok-cm { color: #5c6670; font-style: italic; }
+.editor-body .tok-cm { color: #79838e; font-style: italic; }
 .editor-body .tok-pn { color: #89ddff; }
 
 .caret {
@@ -236,6 +239,10 @@ a { color: inherit; }
   position: absolute; right: 1.25rem; top: 1.25rem;
 }
 
+/* programmatic split moves (keyboard, intro nudge) glide; drag stays 1:1 */
+.exposure.is-anim .pane-photo { transition: clip-path 0.6s var(--ease-in-out); }
+.exposure.is-anim .divider { transition: left 0.6s var(--ease-in-out); }
+
 /* --- divider --- */
 .divider {
   position: absolute; top: 0; bottom: 0;
@@ -256,10 +263,11 @@ a { color: inherit; }
   display: grid; place-items: center;
   font-size: 1rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
-  transition: transform 0.2s ease;
+  transition: transform 160ms var(--ease-out);
 }
 .divider:hover .divider-handle,
 .divider:focus-visible .divider-handle { transform: scale(1.12); }
+.divider:active .divider-handle { transform: scale(0.95); }
 
 .hero-hint {
   text-align: center;
@@ -336,9 +344,10 @@ a { color: inherit; }
   font-size: clamp(1.9rem, 4.5vw, 3rem);
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
+  text-wrap: balance;
 }
 
-.section-lede { max-width: 56ch; color: var(--muted); margin-bottom: 2rem; }
+.section-lede { max-width: 56ch; color: var(--muted); margin-bottom: 2rem; text-wrap: pretty; }
 
 .section-outro {
   font-family: var(--mono); font-size: 0.9rem;
@@ -367,16 +376,30 @@ a { color: inherit; }
 .readme-photo .exif-plate { position: absolute; left: 0.9rem; bottom: 0.9rem; }
 
 .readme-body h2 { margin-bottom: 1.2rem; }
-.readme-body p { max-width: 58ch; margin-bottom: 1.1rem; }
+.readme-body p { max-width: 58ch; margin-bottom: 1.1rem; text-wrap: pretty; }
 .readme-body a { color: var(--glacier); text-underline-offset: 3px; }
 
 .terminal {
   font-family: var(--mono); font-size: 0.88rem;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-left: 3px solid var(--glacier);
-  padding: 1.1rem 1.3rem;
+  border-radius: 8px;
   margin: 1.6rem 0;
+  overflow: hidden;
+}
+.terminal-bar {
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+.terminal-bar .dot { background: var(--line); }
+.terminal-bar .dot:first-child { background: var(--glacier); }
+.terminal-title {
+  margin-left: 0.5rem;
+  font-size: 0.72rem; color: var(--muted);
+}
+.terminal-body {
+  padding: 1.1rem 1.3rem 1.2rem;
   display: grid; gap: 0.8rem;
 }
 .terminal .prompt { color: var(--glacier); }
@@ -468,9 +491,10 @@ a { color: inherit; }
   border-radius: 999px;
   padding: 0.35rem 1rem;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 140ms var(--ease-out);
 }
 .chip:hover { color: var(--paper); border-color: var(--muted); }
+.chip:active { transform: scale(0.96); }
 .chip.is-active { color: var(--ink); background: var(--safelight); border-color: var(--safelight); }
 
 .sheet {
@@ -491,13 +515,14 @@ a { color: inherit; }
   padding: 0; border: 1px solid var(--line); background: var(--surface);
   cursor: zoom-in;
   overflow: hidden;
+  transition: transform 140ms var(--ease-out);
 }
+.frame-btn:active { transform: scale(0.98); }
 .frame-btn img {
   width: 100%;
-  transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1), filter 0.4s ease;
+  transition: transform 0.45s var(--ease-out), filter 0.3s ease;
   filter: saturate(0.9);
 }
-.frame-btn:hover img { transform: scale(1.035); filter: saturate(1.05); }
 
 .frame-plate {
   position: absolute; left: 0; right: 0; bottom: 0;
@@ -506,9 +531,13 @@ a { color: inherit; }
   text-align: left;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
 }
-.frame-btn:hover .frame-plate,
+/* hover motion gated — touch fires false hovers on tap */
+@media (hover: hover) and (pointer: fine) {
+  .frame-btn:hover img { transform: scale(1.035); filter: saturate(1.05); }
+  .frame-btn:hover .frame-plate { opacity: 1; transform: none; }
+}
 .frame-btn:focus-visible .frame-plate { opacity: 1; transform: none; }
 
 .frame-plate span {
@@ -534,9 +563,13 @@ a { color: inherit; }
   padding: 1.05rem 0.25rem;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
-  transition: background 0.2s ease, padding-left 0.25s ease;
+  transition: background 0.2s ease, transform 140ms var(--ease-out);
 }
-.channels a:hover { background: var(--surface); padding-left: 0.9rem; }
+.channels a:active { transform: scale(0.99); }
+@media (hover: hover) and (pointer: fine) {
+  .channels a { transition: background 0.2s ease, padding-left 0.25s var(--ease-out), transform 140ms var(--ease-out); }
+  .channels a:hover { background: var(--surface); padding-left: 0.9rem; }
+}
 
 .channel-key {
   font-family: var(--mono); font-size: 0.8rem; color: var(--glacier);
@@ -573,11 +606,22 @@ a { color: inherit; }
   background: rgba(19, 17, 16, 0.93);
   display: grid; place-items: center;
   padding: clamp(1rem, 4vw, 3rem);
+  opacity: 1;
+  /* enter 220ms, exit faster (150ms); transitions stay interruptible */
+  transition: opacity 0.15s var(--ease-out), display 0.15s allow-discrete;
 }
-.lightbox[hidden] { display: none; }
+.lightbox:not([hidden]) { transition-duration: 0.22s; }
+.lightbox[hidden] { display: none; opacity: 0; }
 .lightbox figure {
   position: relative;
   max-width: min(1100px, 100%);
+  transform: scale(1);
+  transition: transform 0.22s var(--ease-out);
+}
+/* modal scales from center (origin-aware exemption) — never from scale(0) */
+@starting-style {
+  .lightbox:not([hidden]) { opacity: 0; }
+  .lightbox:not([hidden]) figure { transform: scale(0.97); }
 }
 .lightbox img {
   max-height: 82vh; max-width: 100%;
@@ -601,10 +645,16 @@ a { color: inherit; }
 /* only hide-for-reveal when JS is running (html.js set by main.js) */
 .js .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.6, 0.2, 1);
+  transform: translateY(14px);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  transition-delay: var(--stagger, 0ms);
 }
 .js .reveal.is-in { opacity: 1; transform: none; }
+
+/* reveal must never gate content in non-interactive renderers */
+@media print {
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+}
 
 /* ==========================================================================
    Reduced motion
@@ -615,8 +665,12 @@ a { color: inherit; }
   .iris { display: none; }
   .ticker-track { animation: none; }
   .caret { animation: none; }
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal, .js .reveal { opacity: 1; transform: none; transition: none; }
   .frame-btn img { transition: none; }
   .frame-plate { opacity: 1; transform: none; }
+  /* keep the lightbox opacity fade (aids comprehension), drop movement */
+  .lightbox figure { transition: none; }
+  .exposure.is-anim .pane-photo, .exposure.is-anim .divider { transition: none; }
+  .chip, .frame-btn, .channels a, .divider-handle { transition-property: color, border-color, background; }
   * { animation-duration: 0.01ms !important; }
 }

@@ -107,17 +107,26 @@
 
     divider.addEventListener("keydown", function (e) {
       var now = parseFloat(divider.getAttribute("aria-valuenow")) || 50;
-      if (e.key === "ArrowLeft") { setSplit(now - 5); e.preventDefault(); }
-      if (e.key === "ArrowRight") { setSplit(now + 5); e.preventDefault(); }
-      if (e.key === "Home") { setSplit(8); e.preventDefault(); }
-      if (e.key === "End") { setSplit(92); e.preventDefault(); }
+      // small repeated steps stay instant; big jumps glide
+      if (e.key === "ArrowLeft") { exposure.classList.remove("is-anim"); setSplit(now - 5); e.preventDefault(); }
+      if (e.key === "ArrowRight") { exposure.classList.remove("is-anim"); setSplit(now + 5); e.preventDefault(); }
+      if (e.key === "Home") { glide(8); e.preventDefault(); }
+      if (e.key === "End") { glide(92); e.preventDefault(); }
+    });
+
+    // programmatic moves glide via .is-anim; drag removes it for 1:1 tracking
+    function glide(pct) {
+      exposure.classList.add("is-anim");
+      setSplit(pct);
+    }
+    divider.addEventListener("pointerdown", function () {
+      exposure.classList.remove("is-anim");
     });
 
     // gentle intro nudge: photo side breathes in once
     if (!reduceMotion) {
-      setTimeout(function () { setSplit(56); }, 1400);
-      setTimeout(function () { setSplit(50); }, 2000);
-      exposure.style.transition = "none"; // splits are instant while dragging
+      setTimeout(function () { glide(57); }, 1500);
+      setTimeout(function () { glide(50); }, 2250);
     }
   }
 
@@ -141,12 +150,18 @@
   /* ---------------- Scroll reveals ---------------- */
 
   var reveals = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window && !reduceMotion) {
+  // reveals must never gate content: skip them entirely in background tabs
+  // (transitions pause when hidden) and without IO support
+  if ("IntersectionObserver" in window && !reduceMotion && !document.hidden) {
     var io = new IntersectionObserver(function (entries) {
+      // stagger elements that enter together (40ms apart, capped)
+      var batch = 0;
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
+          entry.target.style.setProperty("--stagger", Math.min(batch * 40, 240) + "ms");
           entry.target.classList.add("is-in");
           io.unobserve(entry.target);
+          batch++;
         }
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
@@ -192,9 +207,9 @@
 
   function closeLightbox() {
     lightbox.hidden = true;
-    lightboxImg.src = "";
     document.body.style.overflow = "";
     if (lastFocus) lastFocus.focus();
+    setTimeout(function () { if (lightbox.hidden) lightboxImg.src = ""; }, 200);
   }
 
   document.querySelectorAll(".frame-btn").forEach(function (btn) {
