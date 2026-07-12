@@ -182,6 +182,11 @@
         if (entry.isIntersecting) {
           entry.target.style.setProperty("--stagger", Math.min(batch * 40, 240) + "ms");
           entry.target.classList.add("is-in");
+          // first visible commit starts the history line drawing down
+          if (entry.target.classList.contains("commit")) {
+            var log = entry.target.closest(".gitlog");
+            if (log) log.classList.add("is-drawn");
+          }
           io.unobserve(entry.target);
           batch++;
         }
@@ -221,15 +226,33 @@
   var gallery = [];
   var galleryIdx = 0;
 
-  function showAt(idx) {
+  function renderFrame() {
     var n = gallery.length;
-    galleryIdx = ((idx % n) + n) % n;
     var btn = gallery[galleryIdx];
     var img = btn.querySelector("img");
     lightboxImg.src = img.currentSrc || img.src;
     lightboxImg.alt = img.alt;
     lightboxCap.innerHTML = "&#9679; " + btn.dataset.title + " &middot; " + btn.dataset.loc;
     lightboxCount.textContent = "FRAME " + (galleryIdx + 1) + " / " + n;
+    // preload neighbors so prev/next swaps land instantly
+    [galleryIdx - 1, galleryIdx + 1].forEach(function (j) {
+      var nb = gallery[((j % n) + n) % n].querySelector("img");
+      new Image().src = nb.currentSrc || nb.src;
+    });
+  }
+
+  function showAt(idx, animate) {
+    var n = gallery.length;
+    galleryIdx = ((idx % n) + n) % n;
+    if (!animate) { renderFrame(); return; }
+    // rack focus between frames: blur out, swap, sharpen when loaded
+    lightboxImg.classList.add("is-swapping");
+    setTimeout(function () {
+      renderFrame();
+      var done = function () { lightboxImg.classList.remove("is-swapping"); };
+      if (lightboxImg.complete) { done(); }
+      else { lightboxImg.addEventListener("load", done, { once: true }); }
+    }, 130);
   }
 
   function openLightbox(btn) {
@@ -258,8 +281,8 @@
     btn.addEventListener("click", function () { openLightbox(btn); });
   });
   if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
-  if (lightboxPrev) lightboxPrev.addEventListener("click", function () { showAt(galleryIdx - 1); });
-  if (lightboxNext) lightboxNext.addEventListener("click", function () { showAt(galleryIdx + 1); });
+  if (lightboxPrev) lightboxPrev.addEventListener("click", function () { showAt(galleryIdx - 1, true); });
+  if (lightboxNext) lightboxNext.addEventListener("click", function () { showAt(galleryIdx + 1, true); });
   if (lightbox) {
     lightbox.addEventListener("click", function (e) {
       if (e.target === lightbox) closeLightbox();
@@ -268,8 +291,8 @@
   document.addEventListener("keydown", function (e) {
     if (!lightbox || lightbox.hidden) return;
     if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowLeft") { showAt(galleryIdx - 1); e.preventDefault(); }
-    if (e.key === "ArrowRight") { showAt(galleryIdx + 1); e.preventDefault(); }
+    if (e.key === "ArrowLeft") { showAt(galleryIdx - 1, true); e.preventDefault(); }
+    if (e.key === "ArrowRight") { showAt(galleryIdx + 1, true); e.preventDefault(); }
   });
 
   /* ---------------- Console easter egg ---------------- */
