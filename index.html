@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=10">
+  <link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
 
@@ -433,6 +433,17 @@
           <p class="dk-error" id="dkError" hidden></p>
         </div>
 
+        <div class="dk-bg" id="dkBgTools" hidden>
+          <button class="dk-btn" id="dkRemoveBg">remove background</button>
+          <p class="dk-hint">isolates the subject on-device (~1MB one-time model, cached after)</p>
+          <div class="dk-bg-row" id="dkBgColorRow" hidden>
+            <label for="dkBgColor">backdrop</label>
+            <input type="color" id="dkBgColor" value="#f25c2a">
+            <button class="dk-btn dk-btn-ghost" id="dkBgUndo">restore original</button>
+          </div>
+          <p class="dk-bg-status" id="dkBgStatus" aria-live="polite" hidden></p>
+        </div>
+
         <div class="dk-control">
           <label for="dkExposure">exposure <span class="dk-val" id="dkExposureVal">0</span></label>
           <input type="range" id="dkExposure" min="-40" max="40" value="0" step="1">
@@ -471,8 +482,8 @@
     <p class="lightbox-count" id="lightboxCount" aria-hidden="true"></p>
   </div>
 
-  <script src="js/main.js?v=10"></script>
-  <script src="js/hero3d.js?v=10" defer></script>
-  <script src="js/terminal.js?v=10" defer></script>
+  <script src="js/main.js?v=11"></script>
+  <script src="js/hero3d.js?v=11" defer></script>
+  <script src="js/terminal.js?v=11" defer></script>
 </body>
 </html>

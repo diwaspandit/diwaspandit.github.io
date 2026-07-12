@@ -175,9 +175,20 @@
   var dkUseSample = document.getElementById("dkUseSample");
   var dkCaption = document.getElementById("dkCaption");
   var dkError = document.getElementById("dkError");
+  var dkBgTools = document.getElementById("dkBgTools");
+  var dkRemoveBg = document.getElementById("dkRemoveBg");
+  var dkBgColorRow = document.getElementById("dkBgColorRow");
+  var dkBgColor = document.getElementById("dkBgColor");
+  var dkBgUndo = document.getElementById("dkBgUndo");
+  var dkBgStatus = document.getElementById("dkBgStatus");
   var noiseCanvas = null;
   var lastFocus = null;
-  var userObjectUrl = null;
+  var userObjectUrl = null;   // whatever is currently shown (raw upload or bg composite)
+  var bgOriginalUrl = null;   // pristine uploaded photo, kept alive for undo + re-segmenting
+  var bgCompositeUrl = null;  // most recent background-swapped blob, revoked on next composite
+  var bgMaskCanvas = null;    // cached alpha matte so color changes don't re-run the model
+  var bgSourceImg = null;     // decoded Image of the pristine upload, used to recomposite
+  var segmenterPromise = null;
   var usingUpload = false;
 
   var SAMPLE_SRC = "assets/photos/p4_1-BLNRCamT.jpg";
@@ -285,6 +296,14 @@
     if (dkError) dkError.hidden = true;
   }
 
+  function resetBgState() {
+    if (bgCompositeUrl) { URL.revokeObjectURL(bgCompositeUrl); bgCompositeUrl = null; }
+    bgMaskCanvas = null;
+    bgSourceImg = null;
+    if (dkBgColorRow) dkBgColorRow.hidden = true;
+    setBgStatus("");
+  }
+
   function loadUserFile(file) {
     clearDkError();
     if (!file) return;
@@ -296,25 +315,150 @@
       showDkError("too big (" + (file.size / 1048576).toFixed(1) + "MB) — keep it under 15MB.");
       return;
     }
-    if (userObjectUrl) URL.revokeObjectURL(userObjectUrl);
+    resetBgState();
+    if (bgOriginalUrl) URL.revokeObjectURL(bgOriginalUrl);
     userObjectUrl = URL.createObjectURL(file);
+    bgOriginalUrl = userObjectUrl;
     usingUpload = true;
     dkImg.src = userObjectUrl;
     dkImg.alt = "your photo, developed";
     if (dkCaption) dkCaption.innerHTML = "&#9679; DARKROOM &middot; your photo &middot; developed by you";
     if (dkUseSample) dkUseSample.hidden = false;
+    if (dkBgTools) dkBgTools.hidden = false;
     resetDevelop();
   }
 
   function revertToSample() {
-    if (userObjectUrl) { URL.revokeObjectURL(userObjectUrl); userObjectUrl = null; }
+    resetBgState();
+    if (bgOriginalUrl) { URL.revokeObjectURL(bgOriginalUrl); bgOriginalUrl = null; }
+    userObjectUrl = null;
     usingUpload = false;
     dkImg.src = SAMPLE_SRC;
     dkImg.alt = SAMPLE_ALT;
     if (dkCaption) dkCaption.innerHTML = SAMPLE_CAPTION;
     if (dkUseSample) dkUseSample.hidden = true;
+    if (dkBgTools) dkBgTools.hidden = true;
     clearDkError();
     resetDevelop();
+  }
+
+  /* ---------------- background removal (on-device, lazy-loaded) ---------------- */
+
+  var VISION_CDN = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+  var SEGMENTER_MODEL =
+    "https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite";
+
+  function setBgStatus(msg, isErr) {
+    if (!dkBgStatus) return;
+    dkBgStatus.textContent = msg || "";
+    dkBgStatus.hidden = !msg;
+    dkBgStatus.classList.toggle("is-err", !!isErr);
+  }
+
+  function loadSegmenter() {
+    if (segmenterPromise) return segmenterPromise;
+    segmenterPromise = (async function () {
+      var vision = await import(/* webpackIgnore: true */ VISION_CDN + "/vision_bundle.mjs");
+      var resolver = await vision.FilesetResolver.forVisionTasks(VISION_CDN + "/wasm");
+      return vision.ImageSegmenter.createFromOptions(resolver, {
+        baseOptions: { modelAssetPath: SEGMENTER_MODEL },
+        runningMode: "IMAGE",
+        outputCategoryMask: false,
+        outputConfidenceMasks: true
+      });
+    })();
+    return segmenterPromise;
+  }
+
+  function compositeWithColor(color) {
+    if (!bgSourceImg || !bgMaskCanvas) return;
+    var w = bgSourceImg.naturalWidth, h = bgSourceImg.naturalHeight;
+    var out = document.createElement("canvas");
+    out.width = w; out.height = h;
+    var o = out.getContext("2d");
+    o.fillStyle = color;
+    o.fillRect(0, 0, w, h);
+
+    var subject = document.createElement("canvas");
+    subject.width = w; subject.height = h;
+    var s = subject.getContext("2d");
+    s.drawImage(bgSourceImg, 0, 0, w, h);
+    s.globalCompositeOperation = "destination-in";
+    s.drawImage(bgMaskCanvas, 0, 0, w, h);
+
+    o.drawImage(subject, 0, 0);
+    out.toBlob(function (blob) {
+      if (!blob) return;
+      var url = URL.createObjectURL(blob);
+      if (bgCompositeUrl) URL.revokeObjectURL(bgCompositeUrl);
+      bgCompositeUrl = url;
+      userObjectUrl = url;
+      dkImg.src = url;
+    }, "image/png");
+  }
+
+  async function removeBackground() {
+    if (!usingUpload || !bgOriginalUrl) return;
+    dkRemoveBg.disabled = true;
+    dkRemoveBg.classList.add("dk-btn-loading");
+    setBgStatus("loading the segmenter… (one-time download)");
+    try {
+      var segmenter;
+      try {
+        segmenter = await loadSegmenter();
+      } catch (loadErr) {
+        segmenterPromise = null; // don't cache a dead promise — let the next click retry
+        throw loadErr;
+      }
+      setBgStatus("finding the subject…");
+
+      var img = new Image();
+      await new Promise(function (resolve, reject) {
+        img.onload = resolve;
+        img.onerror = function () { reject(new Error("image failed to decode")); };
+        img.src = bgOriginalUrl;
+      });
+      bgSourceImg = img;
+
+      var result = segmenter.segment(img);
+      var maskObj = (result.confidenceMasks && result.confidenceMasks[0]) || null;
+      if (!maskObj) throw new Error("no mask returned");
+
+      var w = maskObj.width, h = maskObj.height;
+      var floatData = maskObj.getAsFloat32Array();
+      var mc = document.createElement("canvas");
+      mc.width = w; mc.height = h;
+      var mctx = mc.getContext("2d");
+      var imgData = mctx.createImageData(w, h);
+      for (var i = 0; i < floatData.length; i++) {
+        var a = Math.round(Math.max(0, Math.min(1, floatData[i])) * 255);
+        imgData.data[i * 4] = imgData.data[i * 4 + 1] = imgData.data[i * 4 + 2] = 255;
+        imgData.data[i * 4 + 3] = a;
+      }
+      mctx.putImageData(imgData, 0, 0);
+      bgMaskCanvas = mc;
+      maskObj.close();
+      result.close();
+
+      compositeWithColor(dkBgColor ? dkBgColor.value : "#f25c2a");
+      if (dkBgColorRow) dkBgColorRow.hidden = false;
+      setBgStatus("");
+    } catch (err) {
+      setBgStatus("couldn’t load the background remover — needs WebGL, which your browser blocked, disabled, or lacks.", true);
+    } finally {
+      dkRemoveBg.disabled = false;
+      dkRemoveBg.classList.remove("dk-btn-loading");
+    }
+  }
+
+  function undoBackgroundRemoval() {
+    if (!bgOriginalUrl) return;
+    if (bgCompositeUrl) { URL.revokeObjectURL(bgCompositeUrl); bgCompositeUrl = null; }
+    userObjectUrl = bgOriginalUrl;
+    dkImg.src = bgOriginalUrl;
+    bgMaskCanvas = null;
+    if (dkBgColorRow) dkBgColorRow.hidden = true;
+    setBgStatus("");
   }
 
   function wireUpload() {
@@ -325,6 +469,13 @@
       });
     }
     if (dkUseSample) dkUseSample.addEventListener("click", revertToSample);
+    if (dkRemoveBg) dkRemoveBg.addEventListener("click", removeBackground);
+    if (dkBgUndo) dkBgUndo.addEventListener("click", undoBackgroundRemoval);
+    if (dkBgColor) {
+      dkBgColor.addEventListener("input", function () {
+        if (bgMaskCanvas) compositeWithColor(dkBgColor.value);
+      });
+    }
 
     if (dkStage) {
       var dragDepth = 0;

@@ -38,6 +38,10 @@ body {
 
 img { display: block; max-width: 100%; height: auto; }
 
+/* the [hidden] attribute must always win — otherwise a component's own
+   `display:` declaration (flex/grid) silently defeats it at equal specificity */
+[hidden] { display: none !important; }
+
 a { color: inherit; }
 
 :focus-visible {
@@ -612,6 +616,37 @@ a { color: inherit; }
   font-size: 0.72rem; color: var(--safelight);
   border: 1px solid var(--safelight); border-radius: 4px;
   padding: 0.5rem 0.7rem;
+}
+
+/* --- background removal --- */
+.dk-bg {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1.1rem;
+  margin-bottom: 1.1rem;
+  display: grid; gap: 0.6rem;
+}
+.dk-bg-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.dk-bg-row label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.05em; }
+.dk-bg-row input[type="color"] {
+  width: 32px; height: 26px;
+  border: 1px solid var(--line); border-radius: 4px;
+  background: none; padding: 0; cursor: pointer;
+}
+.dk-bg-status { font-size: 0.68rem; color: var(--glacier); letter-spacing: 0.02em; line-height: 1.5; }
+.dk-bg-status.is-err { color: var(--safelight); }
+
+.dk-btn-loading { position: relative; color: transparent !important; }
+.dk-btn-loading::after {
+  content: "";
+  position: absolute; left: 50%; top: 50%;
+  width: 13px; height: 13px; margin: -7px 0 0 -7px;
+  border: 2px solid var(--muted); border-right-color: transparent;
+  border-radius: 50%;
+  animation: dk-spin 0.7s linear infinite;
+}
+@keyframes dk-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .dk-btn-loading::after { animation: none; border-style: dotted; }
 }
 
 /* --- drop veil --- */
