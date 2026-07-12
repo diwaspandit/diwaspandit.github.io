@@ -81,6 +81,7 @@
         <div class="pane pane-photo" id="panePhoto">
           <img src="assets/photos/p4_1-BLNRCamT.jpg" alt="First light on the Himalaya at Kalinchowk, Nepal" fetchpriority="high">
           <div class="pane-photo-shade" aria-hidden="true"></div>
+          <div class="shutter" id="shutter" aria-hidden="true"></div>
           <p class="hero-line hero-line-photo" aria-hidden="true">I chase <em>light.</em></p>
           <p class="exif-plate" aria-hidden="true">&#9679; REC &middot; <span class="exif-extra">Kalinchowk, Nepal &middot; </span>f/1.8<span class="exif-extra"> &middot; ISO 400</span></p>
         </div>
@@ -147,33 +148,33 @@
     <section class="section" id="gitlog">
       <p class="eyebrow eyebrow-code reveal">$ git log --oneline --graph</p>
       <h2 class="reveal">Commit <span class="serif">history.</span></h2>
-      <ol class="gitlog reveal" reversed>
-        <li class="commit">
+      <ol class="gitlog" reversed>
+        <li class="commit reveal">
           <span class="commit-hash">ace0f8a</span>
           <span class="commit-ref">(HEAD &rarr; texas)</span>
           <span class="commit-msg">study: undergraduate &mdash; Texas State University, San Marcos</span>
           <span class="commit-date">now</span>
         </li>
-        <li class="commit">
+        <li class="commit reveal">
           <span class="commit-hash">f22cede</span>
           <span class="commit-ref commit-tag">(tag: meta-frontend)</span>
           <span class="commit-msg">cert: Meta Front-End Developer Certificate</span>
         </li>
-        <li class="commit">
+        <li class="commit reveal">
           <span class="commit-hash">c0ffee1</span>
           <span class="commit-ref commit-tag">(tag: tech-support)</span>
           <span class="commit-msg">cert: Tech Support Specialist Certificate</span>
         </li>
-        <li class="commit">
+        <li class="commit reveal">
           <span class="commit-hash">ca5cade</span>
           <span class="commit-msg">feat(studio): Incubate Nepal application &mdash; one-person production: laptop, lamps, a whiteboard</span>
           <span class="commit-date">2023</span>
         </li>
-        <li class="commit">
+        <li class="commit reveal">
           <span class="commit-hash">5a1ute5</span>
           <span class="commit-msg">learn: St. Xavier&rsquo;s College, Kathmandu &mdash; rural immersion, community first</span>
         </li>
-        <li class="commit">
+        <li class="commit reveal">
           <span class="commit-hash">1n17d0c</span>
           <span class="commit-msg">init: Tech DD Twins &mdash; YouTube channel with my twin brother</span>
           <span class="commit-date">2019</span>
@@ -319,13 +320,13 @@
       <p class="eyebrow eyebrow-code reveal">$ open a channel</p>
       <h2 class="reveal">Say <span class="serif">hi.</span></h2>
       <p class="section-lede reveal">Freelance, internships, photo walks, or a stubborn bug you can&rsquo;t reproduce &mdash; my inbox is open.</p>
-      <ul class="channels reveal">
-        <li><a href="mailto:panditdiwas12us@gmail.com"><span class="channel-key">email</span><span class="channel-val">panditdiwas12us@gmail.com</span></a></li>
-        <li><a href="https://www.linkedin.com/in/diwaspandit12/" target="_blank" rel="noopener"><span class="channel-key">linkedin</span><span class="channel-val">/in/diwaspandit12</span></a></li>
-        <li><a href="https://github.com/diwaspandit" target="_blank" rel="noopener"><span class="channel-key">github</span><span class="channel-val">@diwaspandit</span></a></li>
-        <li><a href="resume.pdf" target="_blank" rel="noopener"><span class="channel-key">resume</span><span class="channel-val">resume.pdf</span></a></li>
-        <li><a href="https://www.instagram.com/diwas512/" target="_blank" rel="noopener"><span class="channel-key">instagram</span><span class="channel-val">@diwas512</span></a></li>
-        <li><a href="https://www.youtube.com/@TechDDTwins" target="_blank" rel="noopener"><span class="channel-key">youtube</span><span class="channel-val">Tech DD Twins</span></a></li>
+      <ul class="channels">
+        <li class="reveal"><a href="mailto:panditdiwas12us@gmail.com"><span class="channel-key">email</span><span class="channel-val">panditdiwas12us@gmail.com</span></a></li>
+        <li class="reveal"><a href="https://www.linkedin.com/in/diwaspandit12/" target="_blank" rel="noopener"><span class="channel-key">linkedin</span><span class="channel-val">/in/diwaspandit12</span></a></li>
+        <li class="reveal"><a href="https://github.com/diwaspandit" target="_blank" rel="noopener"><span class="channel-key">github</span><span class="channel-val">@diwaspandit</span></a></li>
+        <li class="reveal"><a href="resume.pdf" target="_blank" rel="noopener"><span class="channel-key">resume</span><span class="channel-val">resume.pdf</span></a></li>
+        <li class="reveal"><a href="https://www.instagram.com/diwas512/" target="_blank" rel="noopener"><span class="channel-key">instagram</span><span class="channel-val">@diwas512</span></a></li>
+        <li class="reveal"><a href="https://www.youtube.com/@TechDDTwins" target="_blank" rel="noopener"><span class="channel-key">youtube</span><span class="channel-val">Tech DD Twins</span></a></li>
       </ul>
     </section>
   </main>
@@ -338,10 +339,13 @@
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
     <button class="lightbox-close" id="lightboxClose" aria-label="Close viewer">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">&#8249;</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">&#8250;</button>
     <figure>
       <img id="lightboxImg" src="" alt="">
       <figcaption class="exif-plate" id="lightboxCap"></figcaption>
     </figure>
+    <p class="lightbox-count" id="lightboxCount" aria-hidden="true"></p>
   </div>
 
   <script src="js/main.js"></script>

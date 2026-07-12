@@ -106,8 +106,13 @@ a { color: inherit; }
 }
 .nav-brand em { color: var(--safelight); font-style: normal; }
 
-.brand-mark { width: 22px; color: var(--paper); transition: transform 0.6s ease; }
-.nav-brand:hover .brand-mark { transform: rotate(60deg); }
+/* the aperture mark stops down as you scroll (tracks the f-stop readout) */
+.brand-mark {
+  width: 22px; color: var(--paper);
+  transform: rotate(calc(var(--scrollrot, 0deg) + var(--hoverrot, 0deg)));
+  transition: transform 0.5s var(--ease-out);
+}
+.nav-brand:hover .brand-mark { --hoverrot: 60deg; }
 .brand-blades path { fill: none; stroke: var(--safelight); stroke-width: 4; }
 .brand-blades path:nth-child(2n) { stroke: var(--glacier); }
 
@@ -222,6 +227,20 @@ a { color: inherit; }
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(19, 17, 16, 0.25) 0%, rgba(19, 17, 16, 0) 40%, rgba(19, 17, 16, 0.55) 100%);
 }
+
+/* the typed code executes shoot() — the camera fires once */
+.shutter {
+  position: absolute; inset: 0;
+  background: #fdf6e9;
+  opacity: 0;
+  pointer-events: none;
+}
+.shutter.fire { animation: shutter-fire 0.42s var(--ease-out); }
+@keyframes shutter-fire {
+  0% { opacity: 0; }
+  12% { opacity: 0.95; }
+  100% { opacity: 0; }
+}
 .hero-line-photo {
   font-family: var(--serif); font-weight: 300; color: var(--paper);
   left: auto; right: var(--gutter); text-align: right;
@@ -274,7 +293,9 @@ a { color: inherit; }
   font-family: var(--mono); font-size: 0.75rem; color: var(--muted);
   padding: 0.8rem 0 1rem;
   letter-spacing: 0.1em;
+  transition: opacity 0.6s ease;
 }
+.hero-hint.is-dismissed { opacity: 0; }
 
 .hero-lines-m { display: none; }
 
@@ -317,6 +338,9 @@ a { color: inherit; }
   font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em;
   color: var(--muted);
   animation: ticker 38s linear infinite;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ticker:hover .ticker-track { animation-play-state: paused; }
 }
 .ticker-track span { white-space: nowrap; }
 @keyframes ticker { to { transform: translateX(-50%); } }
@@ -445,7 +469,14 @@ a { color: inherit; }
   background: var(--ink);
   border: 2px solid var(--glacier);
 }
-.commit:first-child::before { background: var(--glacier); }
+.commit:first-child::before {
+  background: var(--glacier);
+  animation: head-pulse 3.2s ease-in-out infinite;
+}
+@keyframes head-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(159, 192, 207, 0.35); }
+  50% { box-shadow: 0 0 0 5px rgba(159, 192, 207, 0); }
+}
 
 .commit-hash { color: var(--safelight); margin-right: 0.6rem; }
 .commit-ref { color: var(--glacier); margin-right: 0.6rem; }
@@ -634,9 +665,32 @@ a { color: inherit; }
   position: absolute; top: 1rem; right: 1.4rem;
   background: none; border: none; color: var(--paper);
   font-size: 2.4rem; line-height: 1; cursor: pointer;
-  transition: color 0.2s, transform 0.2s;
+  transition: color 0.2s ease, transform 0.2s var(--ease-out);
 }
 .lightbox-close:hover { color: var(--safelight); transform: rotate(90deg); }
+.lightbox-close:active { transform: rotate(90deg) scale(0.9); }
+
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 1;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(29, 25, 23, 0.7);
+  border: 1px solid var(--line);
+  color: var(--paper);
+  font-family: var(--serif); font-size: 1.7rem; line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 140ms var(--ease-out);
+}
+.lightbox-prev { left: clamp(0.6rem, 2.5vw, 2rem); }
+.lightbox-next { right: clamp(0.6rem, 2.5vw, 2rem); }
+.lightbox-nav:hover { background: var(--surface); color: var(--safelight); }
+.lightbox-nav:active { transform: translateY(-50%) scale(0.92); }
+
+.lightbox-count {
+  position: absolute; bottom: 1.1rem; left: 50%; transform: translateX(-50%);
+  font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em;
+  color: var(--muted);
+}
 
 /* ==========================================================================
    Reveal on scroll
@@ -651,9 +705,28 @@ a { color: inherit; }
 }
 .js .reveal.is-in { opacity: 1; transform: none; }
 
+/* reveals are typed to their content, not one uniform fade-rise:
+   headings pull focus like a lens; photos develop like film */
+.js .section h2.reveal {
+  transform: none;
+  filter: blur(7px);
+  transition: opacity 0.5s var(--ease-out), filter 0.5s var(--ease-out);
+}
+.js .section h2.reveal.is-in { filter: blur(0); }
+
+.js .frame.reveal {
+  transform: none;
+  clip-path: inset(0 0 14% 0);
+  filter: grayscale(0.65) brightness(0.82);
+  transition: opacity 0.55s var(--ease-out), clip-path 0.65s var(--ease-out),
+              filter 0.8s ease;
+  transition-delay: var(--stagger, 0ms);
+}
+.js .frame.reveal.is-in { clip-path: inset(0 0 0 0); filter: none; }
+
 /* reveal must never gate content in non-interactive renderers */
 @media print {
-  .js .reveal { opacity: 1 !important; transform: none !important; }
+  .js .reveal { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; }
 }
 
 /* ==========================================================================
@@ -665,9 +738,12 @@ a { color: inherit; }
   .iris { display: none; }
   .ticker-track { animation: none; }
   .caret { animation: none; }
-  .reveal, .js .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal, .js .reveal { opacity: 1; transform: none; transition: none; filter: none; clip-path: none; }
   .frame-btn img { transition: none; }
   .frame-plate { opacity: 1; transform: none; }
+  .shutter { display: none; }
+  .commit:first-child::before { animation: none; }
+  .brand-mark { transition: none; }
   /* keep the lightbox opacity fade (aids comprehension), drop movement */
   .lightbox figure { transition: none; }
   .exposure.is-anim .pane-photo, .exposure.is-anim .divider { transition: none; }

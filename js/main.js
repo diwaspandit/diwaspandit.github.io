@@ -52,6 +52,16 @@
   function typeTokens(i, pos) {
     if (i >= CODE.length) {
       if (caret) caret.style.display = "none";
+      // the code runs: shoot() fires the camera on the photo side, once
+      var shutter = document.getElementById("shutter");
+      if (shutter && !reduceMotion) {
+        setTimeout(function () {
+          shutter.classList.add("fire");
+          shutter.addEventListener("animationend", function () {
+            shutter.classList.remove("fire");
+          }, { once: true });
+        }, 380);
+      }
       return;
     }
     var tok = CODE[i];
@@ -92,6 +102,8 @@
 
   if (exposure && divider) {
     var dragging = false;
+    var dragged = false;
+    var heroHint = document.querySelector(".hero-hint");
 
     divider.addEventListener("pointerdown", function (e) {
       dragging = true;
@@ -99,10 +111,15 @@
     });
     divider.addEventListener("pointermove", function (e) {
       if (!dragging) return;
+      dragged = true;
       var rect = exposure.getBoundingClientRect();
       setSplit(((e.clientX - rect.left) / rect.width) * 100);
     });
-    divider.addEventListener("pointerup", function () { dragging = false; });
+    divider.addEventListener("pointerup", function () {
+      dragging = false;
+      // the hint has done its job once the visitor has dragged
+      if (dragged && heroHint) heroHint.classList.add("is-dismissed");
+    });
     divider.addEventListener("pointercancel", function () { dragging = false; });
 
     divider.addEventListener("keydown", function (e) {
@@ -133,6 +150,7 @@
   /* ---------------- f-stop scroll readout ---------------- */
 
   var fstop = document.getElementById("fstop");
+  var brandMark = document.querySelector(".brand-mark");
   var STOPS = ["f/1.8", "f/2.8", "f/4", "f/5.6", "f/8", "f/11", "f/16"];
 
   function updateFstop() {
@@ -140,6 +158,10 @@
     var p = max > 0 ? window.scrollY / max : 0;
     var idx = Math.min(STOPS.length - 1, Math.floor(p * STOPS.length));
     if (fstop.textContent !== STOPS[idx]) fstop.textContent = STOPS[idx];
+    // the aperture mark stops down as you scroll deeper
+    if (brandMark && !reduceMotion) {
+      brandMark.style.setProperty("--scrollrot", (p * 75).toFixed(1) + "deg");
+    }
   }
 
   if (fstop) {
@@ -192,13 +214,33 @@
   var lightboxImg = document.getElementById("lightboxImg");
   var lightboxCap = document.getElementById("lightboxCap");
   var lightboxClose = document.getElementById("lightboxClose");
+  var lightboxPrev = document.getElementById("lightboxPrev");
+  var lightboxNext = document.getElementById("lightboxNext");
+  var lightboxCount = document.getElementById("lightboxCount");
   var lastFocus = null;
+  var gallery = [];
+  var galleryIdx = 0;
 
-  function openLightbox(btn) {
+  function showAt(idx) {
+    var n = gallery.length;
+    galleryIdx = ((idx % n) + n) % n;
+    var btn = gallery[galleryIdx];
     var img = btn.querySelector("img");
     lightboxImg.src = img.currentSrc || img.src;
     lightboxImg.alt = img.alt;
     lightboxCap.innerHTML = "&#9679; " + btn.dataset.title + " &middot; " + btn.dataset.loc;
+    lightboxCount.textContent = "FRAME " + (galleryIdx + 1) + " / " + n;
+  }
+
+  function openLightbox(btn) {
+    gallery = Array.prototype.slice.call(
+      document.querySelectorAll(".frame:not(.is-hidden) .frame-btn")
+    );
+    showAt(gallery.indexOf(btn));
+    var multi = gallery.length > 1;
+    lightboxPrev.hidden = !multi;
+    lightboxNext.hidden = !multi;
+    lightboxCount.hidden = !multi;
     lightbox.hidden = false;
     lastFocus = btn;
     lightboxClose.focus();
@@ -216,12 +258,31 @@
     btn.addEventListener("click", function () { openLightbox(btn); });
   });
   if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightboxPrev) lightboxPrev.addEventListener("click", function () { showAt(galleryIdx - 1); });
+  if (lightboxNext) lightboxNext.addEventListener("click", function () { showAt(galleryIdx + 1); });
   if (lightbox) {
     lightbox.addEventListener("click", function (e) {
       if (e.target === lightbox) closeLightbox();
     });
   }
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && lightbox && !lightbox.hidden) closeLightbox();
+    if (!lightbox || lightbox.hidden) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") { showAt(galleryIdx - 1); e.preventDefault(); }
+    if (e.key === "ArrowRight") { showAt(galleryIdx + 1); e.preventDefault(); }
   });
+
+  /* ---------------- Console easter egg ---------------- */
+
+  try {
+    console.log(
+      "%c● REC %c diwas.pandit — dual exposure",
+      "color:#f25c2a;font-family:monospace;font-weight:bold",
+      "color:#9fc0cf;font-family:monospace"
+    );
+    console.log(
+      "You're reading the source — no build step, no framework, just brackets and light.\n" +
+      "Say hi: panditdiwas12us@gmail.com"
+    );
+  } catch (err) { /* consoles are optional */ }
 })();
