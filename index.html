@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
 
@@ -92,6 +92,7 @@
 
         <!-- Code pane (base layer) -->
         <div class="pane pane-code" aria-hidden="false">
+          <canvas id="terrain" class="terrain" aria-hidden="true"></canvas>
           <div class="editor">
             <div class="editor-bar">
               <span class="dot"></span><span class="dot"></span><span class="dot"></span>
@@ -416,6 +417,7 @@
     <p class="lightbox-count" id="lightboxCount" aria-hidden="true"></p>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=7"></script>
+  <script src="js/hero3d.js?v=7" defer></script>
 </body>
 </html>

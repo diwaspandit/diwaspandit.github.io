@@ -165,6 +165,16 @@ a { color: inherit; }
   padding: var(--gutter);
 }
 
+/* the code side's mountains: wireframe terrain behind the editor */
+.terrain {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+.terrain.is-on { opacity: 1; }
+
 .editor {
   width: min(560px, calc(100% - 2rem));
   background: #16191d;
