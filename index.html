@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -415,13 +415,24 @@
   <!-- Darkroom -->
   <div class="darkroom" id="darkroom" role="dialog" aria-modal="true" aria-label="Darkroom — develop a photograph" hidden>
     <div class="darkroom-inner">
-      <figure class="darkroom-stage">
+      <figure class="darkroom-stage" id="dkStage">
         <img id="dkImg" src="assets/photos/p4_1-BLNRCamT.jpg" alt="First light on the Himalaya at Kalinchowk — your development" width="1600" height="1117">
         <div class="dk-grain" id="dkGrain" aria-hidden="true"></div>
-        <figcaption class="exif-plate">&#9679; DARKROOM &middot; Kalinchowk, Nepal &middot; developed by you</figcaption>
+        <figcaption class="exif-plate" id="dkCaption">&#9679; DARKROOM &middot; Kalinchowk, Nepal &middot; developed by you</figcaption>
+        <div class="dk-dropveil" id="dkDropVeil" aria-hidden="true">drop to develop</div>
       </figure>
       <div class="darkroom-panel">
         <p class="darkroom-title">develop.sh</p>
+
+        <div class="dk-upload">
+          <label class="dk-btn dk-btn-upload" for="dkFile">choose photo&hellip;</label>
+          <input type="file" id="dkFile" accept="image/*" hidden>
+          <button class="dk-btn dk-btn-ghost" id="dkUseSample" hidden>use sample instead</button>
+          <p class="dk-hint">drop onto the photo, choose a file, or paste (&#8984;/Ctrl+V)</p>
+          <p class="dk-hint dk-hint-privacy">&#9679; stays on your device &mdash; nothing is uploaded anywhere</p>
+          <p class="dk-error" id="dkError" hidden></p>
+        </div>
+
         <div class="dk-control">
           <label for="dkExposure">exposure <span class="dk-val" id="dkExposureVal">0</span></label>
           <input type="range" id="dkExposure" min="-40" max="40" value="0" step="1">
@@ -460,8 +471,8 @@
     <p class="lightbox-count" id="lightboxCount" aria-hidden="true"></p>
   </div>
 
-  <script src="js/main.js?v=9"></script>
-  <script src="js/hero3d.js?v=9" defer></script>
-  <script src="js/terminal.js?v=9" defer></script>
+  <script src="js/main.js?v=10"></script>
+  <script src="js/hero3d.js?v=10" defer></script>
+  <script src="js/terminal.js?v=10" defer></script>
 </body>
 </html>

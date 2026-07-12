@@ -169,8 +169,21 @@
   var dkDownload = document.getElementById("dkDownload");
   var dkReset = document.getElementById("dkReset");
   var dkClose = document.getElementById("dkClose");
+  var dkStage = document.getElementById("dkStage");
+  var dkFile = document.getElementById("dkFile");
+  var dkDropVeil = document.getElementById("dkDropVeil");
+  var dkUseSample = document.getElementById("dkUseSample");
+  var dkCaption = document.getElementById("dkCaption");
+  var dkError = document.getElementById("dkError");
   var noiseCanvas = null;
   var lastFocus = null;
+  var userObjectUrl = null;
+  var usingUpload = false;
+
+  var SAMPLE_SRC = "assets/photos/p4_1-BLNRCamT.jpg";
+  var SAMPLE_ALT = "First light on the Himalaya at Kalinchowk — your development";
+  var SAMPLE_CAPTION = "&#9679; DARKROOM &middot; Kalinchowk, Nepal &middot; developed by you";
+  var MAX_BYTES = 15 * 1024 * 1024;
 
   // canvas filter support gates the export button (Safari < 16.4)
   var testCtx = document.createElement("canvas").getContext("2d");
@@ -255,10 +268,97 @@
       if (!blob) return;
       var a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "kalinchowk-developed-by-you.jpg";
+      a.download = usingUpload ? "developed-by-you.jpg" : "kalinchowk-developed-by-you.jpg";
       a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
     }, "image/jpeg", 0.9);
+  }
+
+  /* ---------------- upload: picker, drag-drop, paste ---------------- */
+
+  function showDkError(msg) {
+    if (!dkError) return;
+    dkError.textContent = msg;
+    dkError.hidden = false;
+  }
+  function clearDkError() {
+    if (dkError) dkError.hidden = true;
+  }
+
+  function loadUserFile(file) {
+    clearDkError();
+    if (!file) return;
+    if (file.type.indexOf("image/") !== 0) {
+      showDkError("that’s not an image — try a jpg, png, or webp.");
+      return;
+    }
+    if (file.size > MAX_BYTES) {
+      showDkError("too big (" + (file.size / 1048576).toFixed(1) + "MB) — keep it under 15MB.");
+      return;
+    }
+    if (userObjectUrl) URL.revokeObjectURL(userObjectUrl);
+    userObjectUrl = URL.createObjectURL(file);
+    usingUpload = true;
+    dkImg.src = userObjectUrl;
+    dkImg.alt = "your photo, developed";
+    if (dkCaption) dkCaption.innerHTML = "&#9679; DARKROOM &middot; your photo &middot; developed by you";
+    if (dkUseSample) dkUseSample.hidden = false;
+    resetDevelop();
+  }
+
+  function revertToSample() {
+    if (userObjectUrl) { URL.revokeObjectURL(userObjectUrl); userObjectUrl = null; }
+    usingUpload = false;
+    dkImg.src = SAMPLE_SRC;
+    dkImg.alt = SAMPLE_ALT;
+    if (dkCaption) dkCaption.innerHTML = SAMPLE_CAPTION;
+    if (dkUseSample) dkUseSample.hidden = true;
+    clearDkError();
+    resetDevelop();
+  }
+
+  function wireUpload() {
+    if (dkFile) {
+      dkFile.addEventListener("change", function () {
+        if (dkFile.files && dkFile.files[0]) loadUserFile(dkFile.files[0]);
+        dkFile.value = "";
+      });
+    }
+    if (dkUseSample) dkUseSample.addEventListener("click", revertToSample);
+
+    if (dkStage) {
+      var dragDepth = 0;
+      dkStage.addEventListener("dragover", function (e) { e.preventDefault(); });
+      dkStage.addEventListener("dragenter", function (e) {
+        e.preventDefault();
+        dragDepth++;
+        dkStage.classList.add("is-dragover");
+      });
+      dkStage.addEventListener("dragleave", function () {
+        dragDepth = Math.max(0, dragDepth - 1);
+        if (dragDepth === 0) dkStage.classList.remove("is-dragover");
+      });
+      dkStage.addEventListener("drop", function (e) {
+        e.preventDefault();
+        dragDepth = 0;
+        dkStage.classList.remove("is-dragover");
+        var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (f) loadUserFile(f);
+      });
+    }
+
+    // paste an image anywhere while the darkroom is open
+    document.addEventListener("paste", function (e) {
+      if (!darkroom || darkroom.hidden) return;
+      var items = (e.clipboardData || window.clipboardData).items || [];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image/") === 0) {
+          var f = items[i].getAsFile();
+          if (f) { loadUserFile(f); e.preventDefault(); }
+          return;
+        }
+      }
+    });
   }
 
   if (darkroom) {
@@ -274,5 +374,6 @@
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !darkroom.hidden) closeDarkroom();
     });
+    wireUpload();
   }
 })();

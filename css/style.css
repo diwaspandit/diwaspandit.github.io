@@ -590,6 +590,41 @@ a { color: inherit; }
 
 .darkroom-note { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
 
+/* --- upload --- */
+.dk-upload {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1.1rem;
+  margin-bottom: 1.1rem;
+  display: grid; gap: 0.55rem;
+}
+.dk-btn-upload {
+  display: block; text-align: center;
+  border-color: var(--glacier); color: var(--glacier);
+}
+.dk-btn-upload:hover { background: var(--glacier); color: var(--ink); }
+.dk-btn-ghost { font-size: 0.72rem; padding: 0.4rem 0.8rem; color: var(--muted); }
+.dk-hint {
+  font-size: 0.68rem; color: var(--muted); letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+.dk-hint-privacy { color: #6f9c76; }
+.dk-error {
+  font-size: 0.72rem; color: var(--safelight);
+  border: 1px solid var(--safelight); border-radius: 4px;
+  padding: 0.5rem 0.7rem;
+}
+
+/* --- drop veil --- */
+.dk-dropveil {
+  position: absolute; inset: 0; z-index: 3;
+  display: none; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 1rem; letter-spacing: 0.08em;
+  color: var(--paper);
+  background: rgba(159, 192, 207, 0.16);
+  border: 2px dashed var(--glacier);
+}
+.darkroom-stage.is-dragover .dk-dropveil { display: flex; }
+
 @media (max-width: 860px) {
   .darkroom { overflow-y: auto; place-items: start center; }
   .darkroom-inner { grid-template-columns: 1fr; max-width: 560px; }
