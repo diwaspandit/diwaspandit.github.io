@@ -29,8 +29,8 @@
   var CODE = [
     { t: "const", c: "tok-kw" }, { t: " diwas " }, { t: "=", c: "tok-pn" }, { t: " {\n" },
     { t: "  role" }, { t: ":", c: "tok-pn" }, { t: " \"software engineer\"", c: "tok-str" }, { t: ",\n" },
-    { t: "  base" }, { t: ":", c: "tok-pn" }, { t: " [" }, { t: "\"Kathmandu\"", c: "tok-str" }, { t: ", " }, { t: "\"Texas\"", c: "tok-str" }, { t: "],\n" },
-    { t: "  stack" }, { t: ":", c: "tok-pn" }, { t: " [" }, { t: "\"react\"", c: "tok-str" }, { t: ", " }, { t: "\"node\"", c: "tok-str" }, { t: ", " }, { t: "\"postgres\"", c: "tok-str" }, { t: "],\n" },
+    { t: "  base" }, { t: ":", c: "tok-pn" }, { t: " [" }, { t: "\"Kathmandu\"", c: "tok-str" }, { t: ", " }, { t: "\"Austin\"", c: "tok-str" }, { t: "],\n" },
+    { t: "  stack" }, { t: ":", c: "tok-pn" }, { t: " [" }, { t: "\"next.js\"", c: "tok-str" }, { t: ", " }, { t: "\"postgres\"", c: "tok-str" }, { t: ", " }, { t: "\"pytorch\"", c: "tok-str" }, { t: "],\n" },
     { t: "  sideQuest" }, { t: ":", c: "tok-pn" }, { t: " \"a 50mm prime\"", c: "tok-str" }, { t: ",\n" },
     { t: "};\n\n" },
     { t: "// both halves compile\n", c: "tok-cm" },

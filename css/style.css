@@ -509,6 +509,35 @@ a { color: inherit; }
 .stack-card .b { color: var(--safelight); }
 
 /* ==========================================================================
+   Builds — repo list
+   ========================================================================== */
+
+.repos {
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.repo {
+  padding: 1.4rem 0.25rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.repo-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 1.2rem;
+  margin-bottom: 0.45rem;
+}
+.repo-name {
+  font-family: var(--mono); font-weight: 500; font-size: 1.05rem;
+  color: var(--glacier);
+}
+.repo-badge {
+  font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em;
+  color: var(--safelight);
+}
+.repo-desc { max-width: 62ch; margin-bottom: 0.5rem; text-wrap: pretty; }
+.repo-stack {
+  font-family: var(--mono); font-size: 0.78rem; color: var(--muted);
+}
+
+/* ==========================================================================
    Contact sheet
    ========================================================================== */
 
